@@ -31,4 +31,4 @@ store.subscribe(()=>{
     
 })
 store.dispatch({type: "ADD_ITEM",payload: { name: "Shirt", price: 500 }});
-store.dispatch({type: "ADD_ITEM",payload: { name: "shaddi", price: 500 }});
+store.dispatch({type: "ADD_ITEM",payload: { name: "pants", price: 500 }});

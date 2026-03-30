@@ -1,23 +1,34 @@
+const { createStore, applyMiddleware } = require("redux");
+const { composeWithDevTools } = require("redux-devtools-extension");
+const logger = require("redux-logger").createLogger();
 
+const increment = () => ({ type: "INCREMENT" });
+const decrement = () => ({ type: "DECREMENT" });
 
-const express = require("express");
+const initialState = { count: 0 };
 
-const app = express();
+function reducer(state = initialState, action) {
+  switch (action.type) {
+    case "INCREMENT":
+      return { ...state, count: state.count + 1 };
 
-app.use((req, res, next) => {
-    console.log("Method:", req.method);
-    console.log("URL:", req.url);
-    next();
+    case "DECREMENT":
+      return { ...state, count: state.count - 1 };
+
+    default:
+      return state;
+  }
+}
+
+const store = createStore(
+  reducer,
+  composeWithDevTools(applyMiddleware(logger))
+);
+
+store.subscribe(() => {
+  console.log("State:", store.getState());
 });
 
-app.get("/", (req, res) => {
-    res.send("Home Page");
-});
-
-app.get("/about", (req, res) => {
-    res.send("About Page");
-});
-
-app.listen(3000, () => {
-    console.log("Server running...");
-});
+store.dispatch(increment());
+store.dispatch(increment());
+store.dispatch(decrement());
